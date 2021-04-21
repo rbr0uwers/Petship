@@ -1,5 +1,5 @@
 <?php
-    require_once 'db_connect.php';
+    require_once 'functions/db_connect.php';
 
     $sql = "SELECT * FROM dishes";
     $result = $mysqli->query($sql);

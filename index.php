@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <?php include 'nav.php'; ?>
-    <?php include 'hero.php'; ?>
-    <?php include 'list.php'; ?>
+    <?php include 'components/nav.php'; ?>
+    <?php include 'components/hero.php'; ?>
+    <?php include 'components/list.php'; ?>
 </body>
 </html>
