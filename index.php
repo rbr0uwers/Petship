@@ -12,6 +12,6 @@
 <body>
     <?php include 'nav.php'; ?>
     <?php include 'hero.php'; ?>
-    
+    <?php include 'list.php'; ?>
 </body>
 </html>
