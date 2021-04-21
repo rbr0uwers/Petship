@@ -1,7 +1,18 @@
 <?php
     require_once 'functions/db_connect.php';
+    $item_size = 9;
 
-    $sql = "SELECT * FROM dishes";
+    if(isset($_GET["show"])){
+        $offset = $_GET["show"];   
+    } else {
+        $offset = 0;
+    }
+
+    $cnt_sql = "SELECT count(*) FROM dishes";
+    $cnt_result = $mysqli->query($cnt_sql);
+    $row_count = ($cnt_result->fetch_all())[0][0];
+
+    $sql = "SELECT * FROM dishes LIMIT $item_size OFFSET $offset";
     $result = $mysqli->query($sql);
 ?>
 
@@ -24,5 +35,15 @@
                 </div>';
             }
         ?>   
+    </div>
+    <div class="d-flex justify-content-evenly mx-auto w-50 mt-3">
+        <?php
+            $numberOfLinks = floor($row_count/$item_size) + 1;
+            for ($i = 0; $i < $numberOfLinks; $i++) {
+                $index = $i*$item_size;
+                $page = $i+1;
+                echo '<a class="m-2" href="index.php?show='.$index.'">Page '.$page.'</a>';
+            }
+        ?>
     </div>
 </div>
