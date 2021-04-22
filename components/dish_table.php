@@ -29,7 +29,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">name</th>
                 <th scope="col">price</th>
                 <th scope="col">description</th>
@@ -38,11 +37,19 @@
             </tr>
         </thead>
         <tbody>
+            <tr>
+                <form action="#" method="GET">
+                    <td><input type="text" class="form-control" name="name"></td>
+                    <td><input type="text" class="form-control" name="price"></td>
+                    <td><input type="text" class="form-control" name="description"></td>
+                    <td><input type="url" class="form-control" name="img_url"></td>
+                    <td><button type="submit" name="action" class="btn btn-success" value="add">+</button></td>
+                </form>
+            </tr>
             <?php 
                 while ($dish = $fetch_result->fetch_assoc()) {
                     echo '
                         <tr>
-                            <td>'.$dish["id"].'</td>
                             <td>'.$dish["name"].'</td>
                             <td>'.$dish["price"].'</td>
                             <td>'.$dish["description"].'</td>
@@ -51,16 +58,6 @@
                         </tr>';
                 }
             ?>   
-            <tr>
-                <form action="#" method="GET">
-                    <td></td>
-                    <td><input type="text" class="form-control" name="name"></td>
-                    <td><input type="text" class="form-control" name="price"></td>
-                    <td><input type="text" class="form-control" name="description"></td>
-                    <td><input type="url" class="form-control" name="img_url"></td>
-                    <td><button type="submit" name="action" class="btn btn-success" value="add">+</button></td>
-                </form>
-            </tr>
         </tbody>
     </table>
 </div>
