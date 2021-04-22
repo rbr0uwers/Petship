@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dannys Delicious CRUDs</title>
 
-    <?php require_once 'components/boot.php'?>
+    <?php readfile('components/boot.html');?>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <?php include 'components/nav.php'; ?>
-    <?php include 'components/hero.php'; ?>
+    <?php readfile('components/nav.html'); ?>
+    <?php readfile('components/hero.html'); ?>
     <?php include 'components/dish_cards.php'; ?>
 </body>
 </html>
