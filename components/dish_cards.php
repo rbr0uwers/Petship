@@ -38,14 +38,16 @@
             }
         ?>   
     </div>
-    <div class="d-flex justify-content-evenly mx-auto w-50 mt-3">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-3">
         <?php
             $numberOfLinks = floor($row_count/$item_size) + 1;
             for ($i = 0; $i < $numberOfLinks; $i++) {
                 $index = $i*$item_size;
                 $page = $i+1;
-                echo '<a class="m-2" href="index.php?show='.$index.'">Page '.$page.'</a>';
+                echo '<li class="page-item"><a class="page-link" href="index.php?show='.$index.'">'.$page.'</a></li>';
             }
         ?>
-    </div>
+        </ul>
+    </nav>
 </div>
