@@ -14,6 +14,8 @@
 
     $sql = "SELECT * FROM dishes LIMIT $item_size OFFSET $offset";
     $result = $mysqli->query($sql);
+
+    $mysqli->close();
 ?>
 
 <div class="container mt-3">

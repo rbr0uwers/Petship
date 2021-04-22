@@ -21,6 +21,8 @@
 
     $sql = "SELECT * FROM dishes";
     $fetch_result = $mysqli->query($sql);
+
+    $mysqli->close();
 ?>
 
 <div class="container mt-3"> 
