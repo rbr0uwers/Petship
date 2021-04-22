@@ -1,5 +1,5 @@
 <?php
-    require_once 'functions/db_connect.php';
+    require_once 'actions/db_connect.php';
 
     if(isset($_GET["action"])){
         if ($_GET["action"] == "delete"){

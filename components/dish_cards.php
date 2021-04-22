@@ -1,5 +1,5 @@
 <?php
-    require_once 'functions/db_connect.php';
+    require_once 'actions/db_connect.php';
     $item_size = 9;
 
     if(isset($_GET["show"])){
