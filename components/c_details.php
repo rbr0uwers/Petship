@@ -19,16 +19,21 @@
             WHERE media.mid=$mid";
 
     $result = $mysqli->query($sql);
-    $media = $result->fetch_all(MYSQLI_ASSOC);
 
+    if ($result->num_rows == 0) {
+        header("location: error.php");
+        exit; 
+    }
+
+    $media = $result->fetch_all(MYSQLI_ASSOC);
     $mysqli->close();
 ?>
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.php">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page"><?php echo $media[0]["title"] ?></li>
     </ol>
-    </nav>
+</nav>
 <div class="row g-4">
     <div class="col-sm-4">
         <img class="img-responsive-big" src="<?php echo $media[0]["image"] ?>" alt="">

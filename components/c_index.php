@@ -17,7 +17,11 @@
 
     $mysqli->close();
 ?>
-
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+    </ol>
+</nav>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">   
     <?php
         while ($media = $result->fetch_assoc()) {
