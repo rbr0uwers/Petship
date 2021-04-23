@@ -1,9 +1,22 @@
+.logo {
+    width: 100px;
+    max-height: 100%;
+    object-fit: contain;
+}
+
 .hero {
-    background: #fff url(../img/pexels-jonathan-borba-2983101.jpg) no-repeat center center;
+    background: #fff url(../img/pexels-tamas-meszaros-12064.jpg) no-repeat center center;
     background-size: cover;
-    height: 50vh;
+    height: 40vh;
 }
 
 .bg-darker {
     background-color: rgba(255, 255, 255, 0.8);
+    display: inline-block;
+}
+
+.img-responsive {
+    height: 10rem;
+    width: auto;
+    object-fit: cover;
 }
