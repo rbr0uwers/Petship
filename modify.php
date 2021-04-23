@@ -13,7 +13,9 @@
     <?php readfile('components/nav.html'); ?>
     <?php readfile('components/hero.html'); ?>
     <div class="container mt-3"> 
-    <?php include 'components/c_modify.php'; ?>
-    </div>     
+        <?php include 'components/c_modify.php'; ?>
+    </div>
+    <?php readfile('components/footer.html'); ?>
+    <?php readfile('components/bootjs.html'); ?>
 </body>
 </html>

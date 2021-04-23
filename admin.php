@@ -15,5 +15,7 @@
     <div class="container mt-3"> 
         <?php include 'components/c_admin.php'; ?>
     </div>
+    <?php readfile('components/footer.html'); ?>
+    <?php readfile('components/bootjs.html'); ?>
 </body>
 </html>

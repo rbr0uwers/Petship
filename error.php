@@ -15,5 +15,7 @@
     <div class="container mt-3"> 
         <?php readfile('components/c_error.html'); ?>
     </div>
+    <?php readfile('components/footer.html'); ?>
+    <?php readfile('components/bootjs.html'); ?>
 </body>
 </html>
