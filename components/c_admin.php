@@ -1,6 +1,6 @@
 <?php
     require_once 'actions/db_connect.php';
-    $sql = "SELECT * FROM dishes";
+    $sql = "SELECT mid,title,isbn,`type` FROM media";
     $fetch_result = $mysqli->query($sql);
     $mysqli->close();
 ?>
@@ -8,10 +8,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">name</th>
-            <th scope="col">price</th>
-            <th scope="col">description</th>
-            <th scope="col">img_url</th>
+            <th scope="col">id</th>
+            <th scope="col">title</th>
+            <th scope="col">isbn</th>
+            <th scope="col">type</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -26,16 +26,16 @@
             </form>
         </tr>
         <?php 
-            while ($dish = $fetch_result->fetch_assoc()) {
+            while ($media = $fetch_result->fetch_assoc()) {
                 echo '
                     <tr>
-                        <td>'.$dish["name"].'</td>
-                        <td>'.$dish["price"].'</td>
-                        <td>'.$dish["description"].'</td>
-                        <td>'.$dish["img_url"].'</td>
+                        <td>'.$media["mid"].'</td>
+                        <td>'.$media["title"].'</td>
+                        <td>'.$media["isbn"].'</td>
+                        <td>'.$media["type"].'</td>
                         <td>
-                            <a href="modify.php?action=modify&id='.$dish["id"].'" class="btn btn-danger btn-sm"><i class="bi bi-dash-square"></i></a>
-                            <a href="delete.php?id='.$dish["id"].'" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                            <a href="modify.php?action=modify&id='.$media["id"].'" class="btn btn-danger btn-sm"><i class="bi bi-dash-square"></i></a>
+                            <a href="delete.php?id='.$media["id"].'" class="btn btn-secondary btn-sm"><i class="bi bi-pencil-square"></i></a>
                         </td>
                     </tr>';
             }
