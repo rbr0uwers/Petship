@@ -16,5 +16,6 @@
         <?php include 'components/c_index.php'; ?>
     </div>
     <?php readfile('components/footer.html'); ?>
+    <?php readfile('components/bootjs.html'); ?>
 </body>
 </html>
