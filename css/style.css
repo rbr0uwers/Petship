@@ -20,3 +20,14 @@
     width: auto;
     object-fit: cover;
 }
+
+.img-responsive-big {
+    height: 30rem;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.hover:hover{
+    -webkit-box-shadow: 5px 9px 15px 0px #A0A0A0; 
+    box-shadow: 5px 9px 15px 0px #A0A0A0;           
+}
