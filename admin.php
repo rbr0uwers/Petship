@@ -12,6 +12,8 @@
 <body>
     <?php readfile('components/nav.html'); ?>
     <?php readfile('components/hero.html'); ?>
-    <?php include 'components/dish_table.php'; ?>
+    <div class="container mt-3"> 
+        <?php include 'components/c_admin.php'; ?>
+    </div>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dannys Delicious CRUDs | Oooops.</title>
+    <title>Dannys Delicious CRUDs | Delete Dish</title>
 
     <?php readfile('components/boot.html');?>
     <link rel="stylesheet" href="css/style.css">
@@ -13,7 +13,7 @@
     <?php readfile('components/nav.html'); ?>
     <?php readfile('components/hero.html'); ?>
     <div class="container mt-3"> 
-        <?php readfile('components/c_error.html'); ?>
-    </div>
+        <?php include 'components/c_delete.php'; ?>
+    </div>     
 </body>
 </html>
