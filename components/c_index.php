@@ -42,7 +42,7 @@
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center mt-3">
     <?php
-        $numberOfLinks = floor($row_count/$item_size) + 1;
+        $numberOfLinks = ceil($row_count/$item_size);
         for ($i = 0; $i < $numberOfLinks; $i++) {
             $index = $i*$item_size;
             $page = $i+1;
