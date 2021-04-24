@@ -21,7 +21,7 @@
     </thead>
     <tbody>
         <tr>
-            <td><a href="#" class="bi bi-plus-square fs-4 text-success "></a></td>
+            <td><a href="modify.php?action=add" class="bi bi-plus-square fs-4 text-success "></a></td>
             <td colspan="4">Add new media item</td>     
         </tr>
         <?php 
@@ -29,8 +29,8 @@
                 echo '
                     <tr>
                         <td>
-                            <a href="delete.php?action=modify&id='.$media["id"].'" class="bi bi-dash-square text-danger fs-4"></a>
-                            <a href="modify.php?id='.$media["id"].'" class="bi bi-pencil-square text-secondary fs-4"></a>
+                            <a href="delete.php?action=modify&mid='.$media["mid"].'" class="bi bi-dash-square text-danger fs-4"></a>
+                            <a href="modify.php?action=modify&mid='.$media["mid"].'" class="bi bi-pencil-square text-secondary fs-4"></a>
                         </td>
                         <td>'.$media["mid"].'</td>
                         <td>'.$media["title"].'</td>
