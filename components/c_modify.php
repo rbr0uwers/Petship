@@ -1,10 +1,10 @@
 <?php
     require_once 'actions/db_connect.php';
     require_once 'actions/functions.php';
-    
-    if(!isset($_GET["action"]) || ($_GET["action"] != "modify" && $_GET["action"] != "add")) exitGracefully();
+
+    if(!isset($_GET["action"]) || ($_GET["action"] != "modify" && $_GET["action"] != "add" && $_GET["action"] != "delete")) exitGracefully();
  
-    if ($_GET["action"] == "modify") {
+    if ($_GET["action"] == "modify" || $_GET["action"] == "delete") {
         if(!isset($_GET["mid"])) exitGracefully();
 
         $mid = $_GET["mid"];
@@ -24,6 +24,9 @@
         $result = $mysqli->query($sql_author_media);
         $media_author = $result->fetch_all(MYSQLI_ASSOC);   
     } 
+
+    // Make Form fields read-only when in delete mode
+    $disableText = $_GET["action"] == "delete" ? "disabled" : "";
     
     $sql_author = "SELECT * FROM author";
     $result = $mysqli->query($sql_author);
@@ -47,27 +50,27 @@
         <!-- Send ID to identify media item to modify later -->
         <input type="hidden" name="mid" value="<?php echo $media['mid'] ?? ''; ?>">
         <label for="inputTitle" class="form-label">Title</label>
-        <input type="text" class="form-control" name="title" id="inputTitle" value="<?php echo $media['title'] ?? ''; ?>" required>
+        <input type="text" class="form-control" name="title" id="inputTitle" value="<?php echo $media['title'] ?? ''; ?>" required <?php echo $disableText; ?>>
     </div>
     <div class="col-md-6">
         <label for="inputIsbn" class="form-label">ISBN</label>
-        <input type="text" class="form-control" name="isbn" id="inputIsbn" value="<?php echo $media['isbn'] ?? ''; ?>" required>
+        <input type="text" class="form-control" name="isbn" id="inputIsbn" value="<?php echo $media['isbn'] ?? ''; ?>" required <?php echo $disableText; ?>>
     </div>
     <div class="col-12">
         <label for="inputDescription" class="form-label">Description</label>
-        <textarea type="text" class="form-control" name="description" id="inputDescription" rows="3" required><?php echo $media['description'] ?? ''; ?></textarea>
+        <textarea type="text" class="form-control" name="description" id="inputDescription" rows="3" required <?php echo $disableText; ?>><?php echo $media['description'] ?? ''; ?></textarea>
     </div>
     <div class="col-md-12">
         <label for="inputUrl" class="form-label">Image URL</label>
-        <input type="url" class="form-control" name="image" id="inputUrl" value="<?php echo $media['image'] ?? ''; ?>">
+        <input type="url" class="form-control" name="image" id="inputUrl" value="<?php echo $media['image'] ?? ''; ?>" <?php echo $disableText; ?>>
     </div>
     <div class="col-md-6">
         <label for="inputPubDate" class="form-label">Publication Date</label>
-        <input type="date" class="form-control" name="pub_date" id="inputPubDate" value="<?php echo $media['pub_date'] ?? ''; ?>" required>
+        <input type="date" class="form-control" name="pub_date" id="inputPubDate" value="<?php echo $media['pub_date'] ?? ''; ?>" required <?php echo $disableText; ?>>
     </div>
     <div class="col-md-6">
         <label for="inputType" class="form-label">Media-Type</label>
-        <select id="inputType" class="form-select" name="type">
+        <select id="inputType" class="form-select" name="type" <?php echo $disableText; ?>>
             <option value="book" <?php echo $media['type'] == 'book' ? 'selected' : ''; ?>>Book</option>
             <option value="cd" <?php echo $media['type'] == 'cd' ? 'selected' : ''; ?>>CD</option>
             <option value="dvd" <?php echo $media['type'] == 'dvd' ? 'selected' : ''; ?>>DVD</option>
@@ -75,7 +78,7 @@
     </div>
     <div class="col-md-6">
         <label for="inputPublisher" class="form-label">Publisher</label>
-        <select id="inputType" class="form-select" name="pid">
+        <select id="inputType" class="form-select" name="pid" <?php echo $disableText; ?>>
             <?php 
                 foreach($publisher as $item){
                     $selectedString = $item["pid"] == $media["pid"] ? "selected" : "";
@@ -86,7 +89,7 @@
     </div>
     <div class="col-md-6">
         <label for="inputAuthor" class="form-label">Author(s)</label>
-        <select class="form-select" multiple size="3" id="inputAuthor" name="aid[]">
+        <select class="form-select" multiple size="3" id="inputAuthor" name="aid[]" <?php echo $disableText; ?>>
             <?php 
                 foreach($author as $item){
                     $selectedString = "";
@@ -104,10 +107,23 @@
     <div class="col-12">
         <div class="form-check">
             <label class="form-check-label" for="availCheck">Available</label>
-            <input class="form-check-input" type="checkbox" name="isAvailable" value="true" id="availCheck" <?php echo $media['isAvailable'] ? "checked" : ""; ?>> 
+            <input class="form-check-input" type="checkbox" name="isAvailable" value="true" id="availCheck" <?php echo $media['isAvailable'] ? "checked" : ""; ?> <?php echo $disableText; ?>> 
         </div>
     </div>
     <div class="col-12">
-        <button type="submit" class="btn btn-success" name="action" value="<?php echo ($_GET["action"]); ?>"><?php echo ucfirst($_GET["action"]); ?></button>
+        <?php 
+            switch ($_GET["action"]) {
+                case "delete": 
+                    echo '<button type="submit" class="btn btn-danger" name="action" value="delete">Delete Item</button>';
+                    break;
+                case "add": 
+                    echo '<button type="submit" class="btn btn-success" name="action" value="add">Add new Item</button>';
+                    break;
+                case "modify": 
+                    echo '<button type="submit" class="btn btn-success" name="action" value="modify">Update Item</button>';
+                    break;
+            }
+        ?>
+        <a class="btn btn-secondary" href="admin.php">Cancel</a>
     </div>
 </form>

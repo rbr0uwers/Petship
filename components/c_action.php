@@ -8,7 +8,7 @@
         exitGracefully();
     }
 
-    if($action != "modify" && $action!= "add") exitGracefully();
+    if($action != "modify" && $action!= "add" && $action!= "delete") exitGracefully();
 
     $title = $_POST["title"];
     $image = $_POST["image"];
@@ -61,6 +61,16 @@
         }
 
         $message = "Media item succesfully created. New ID: $new_mid";
+
+    } elseif ($action == "delete") {
+        $mid = $_POST["mid"];
+        $sql = "DELETE FROM media
+                WHERE mid = $mid";
+        
+        $result = $mysqli->query($sql);
+        
+        if (!$result) exitGracefully();
+        $message = "Media item (ID: $mid) succesfully deleted.";
     }
 
     $mysqli->close();

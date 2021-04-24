@@ -34,7 +34,7 @@
                 echo '
                     <tr>
                         <td>
-                            <a href="delete.php?action=modify&mid='.$media["mid"].'" class="bi bi-dash-square text-danger fs-4"></a>
+                            <a href="modify.php?action=delete&mid='.$media["mid"].'" class="bi bi-dash-square text-danger fs-4"></a>
                             <a href="modify.php?action=modify&mid='.$media["mid"].'" class="bi bi-pencil-square text-secondary fs-4"></a>
                         </td>
                         <td>'.$media["mid"].'</td>
