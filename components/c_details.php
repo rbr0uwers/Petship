@@ -1,11 +1,11 @@
 <?php
     require_once 'actions/db_connect.php';
+    require_once 'actions/functions.php';
 
     if(isset($_GET["mid"])) {
         $mid = $_GET["mid"];
     } else {
-        header("location: error.php");
-        exit;   
+        exitGracefully();  
     }
 
     $sql = "SELECT * 
@@ -20,10 +20,7 @@
 
     $result = $mysqli->query($sql);
 
-    if ($result->num_rows == 0) {
-        header("location: error.php");
-        exit; 
-    }
+    if ($result->num_rows == 0) exitGracefully();
 
     $media = $result->fetch_all(MYSQLI_ASSOC);
     $mysqli->close();

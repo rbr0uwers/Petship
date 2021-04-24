@@ -1,6 +1,7 @@
 <?php
     require_once 'actions/db_connect.php';
     require_once 'actions/functions.php';
+    
     if(!isset($_GET["action"]) || ($_GET["action"] != "modify" && $_GET["action"] != "add")) exitGracefully();
  
     if ($_GET["action"] == "modify") {

@@ -1,7 +1,12 @@
 <?php
     require_once 'actions/db_connect.php';
+    require_once 'actions/functions.php';
+
     $sql = "SELECT mid,title,isbn FROM media";
     $fetch_result = $mysqli->query($sql);
+    
+    if (!$fetch_result) exitGracefully();
+    
     $mysqli->close();
 ?>
 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
