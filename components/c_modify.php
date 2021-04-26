@@ -3,7 +3,7 @@
     require_once 'actions/functions.php';
 
     if(!isset($_GET["action"]) || ($_GET["action"] != "modify" && $_GET["action"] != "add" && $_GET["action"] != "delete")) exitGracefully();
- 
+
     if ($_GET["action"] == "modify" || $_GET["action"] == "delete") {
         if(!isset($_GET["mid"])) exitGracefully();
 
@@ -71,9 +71,9 @@
     <div class="col-md-6">
         <label for="inputType" class="form-label">Media-Type</label>
         <select id="inputType" class="form-select" name="type" <?php echo $disableText; ?>>
-            <option value="book" <?php echo $media['type'] == 'book' ? 'selected' : ''; ?>>Book</option>
-            <option value="cd" <?php echo $media['type'] == 'cd' ? 'selected' : ''; ?>>CD</option>
-            <option value="dvd" <?php echo $media['type'] == 'dvd' ? 'selected' : ''; ?>>DVD</option>
+            <option value="book" <?php if (isset($media)) echo $media['type'] == 'book' ? 'selected' : ''; ?>>Book</option>
+            <option value="cd" <?php if (isset($media)) echo $media['type'] == 'cd' ? 'selected' : ''; ?>>CD</option>
+            <option value="dvd" <?php if (isset($media)) echo $media['type'] == 'dvd' ? 'selected' : ''; ?>>DVD</option>
         </select>
     </div>
     <div class="col-md-6">
@@ -107,7 +107,7 @@
     <div class="col-12">
         <div class="form-check">
             <label class="form-check-label" for="availCheck">Available</label>
-            <input class="form-check-input" type="checkbox" name="isAvailable" value="true" id="availCheck" <?php echo $media['isAvailable'] ? "checked" : ""; ?> <?php echo $disableText; ?>> 
+            <input class="form-check-input" type="checkbox" name="isAvailable" value="true" id="availCheck" <?php if (isset($media)) echo $media['isAvailable'] ? "checked" : ""; ?> <?php echo $disableText; ?>> 
         </div>
     </div>
     <div class="col-12">
