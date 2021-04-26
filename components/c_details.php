@@ -33,7 +33,7 @@
 </nav>
 <div class="row g-4">
     <div class="col-sm-4">
-        <img class="img-responsive-big" src="<?php echo $media[0]["image"] ?>" alt="">
+        <img class="img-responsive-big" src=<?php echo '"uploads/'.$media[0]["image"].'"' ?> alt="">
     </div>
     <div class="col-sm-6">
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">

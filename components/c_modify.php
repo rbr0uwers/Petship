@@ -45,7 +45,7 @@
         <li class="breadcrumb-item" aria-current="page"><?php echo ucfirst($_GET["action"]); ?> Media Item</li>
     </ol>
 </nav>
-<form class="row g-3" method="post" action="action.php">
+<form class="row g-3 needs-validation" method="post" action="action.php" enctype="multipart/form-data">
     <div class="col-md-6">
         <!-- Send ID to identify media item to modify later -->
         <input type="hidden" name="mid" value="<?php echo $media['mid'] ?? ''; ?>">
@@ -61,8 +61,11 @@
         <textarea type="text" class="form-control" name="description" id="inputDescription" rows="3" required <?php echo $disableText; ?>><?php echo $media['description'] ?? ''; ?></textarea>
     </div>
     <div class="col-md-12">
-        <label for="inputUrl" class="form-label">Image URL</label>
-        <input type="url" class="form-control" name="image" id="inputUrl" value="<?php echo $media['image'] ?? ''; ?>" <?php echo $disableText; ?>>
+        <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
+        <input type= "hidden" name= "image" value="<?php echo $media['image'] ?? ''; ?>" />
+        <label for="inputUrl" class="form-label">Image File</label>
+        <input type="file" class="form-control" name="image" id="inputUrl" <?php echo $disableText; ?>>
+        <div class="form-text">Maximum file size: 500KB. Allowed extensions: png or jpg.</div>
     </div>
     <div class="col-md-6">
         <label for="inputPubDate" class="form-label">Publication Date</label>
@@ -70,7 +73,7 @@
     </div>
     <div class="col-md-6">
         <label for="inputType" class="form-label">Media-Type</label>
-        <select id="inputType" class="form-select" name="type" <?php echo $disableText; ?>>
+        <select id="inputType" class="form-select" name="type" <?php echo $disableText; ?> required>
             <option value="book" <?php if (isset($media)) echo $media['type'] == 'book' ? 'selected' : ''; ?>>Book</option>
             <option value="cd" <?php if (isset($media)) echo $media['type'] == 'cd' ? 'selected' : ''; ?>>CD</option>
             <option value="dvd" <?php if (isset($media)) echo $media['type'] == 'dvd' ? 'selected' : ''; ?>>DVD</option>
@@ -78,7 +81,7 @@
     </div>
     <div class="col-md-6">
         <label for="inputPublisher" class="form-label">Publisher</label>
-        <select id="inputType" class="form-select" name="pid" <?php echo $disableText; ?>>
+        <select id="inputType" class="form-select" name="pid" <?php echo $disableText; ?> required>
             <?php 
                 foreach($publisher as $item){
                     $selectedString = $item["pid"] == $media["pid"] ? "selected" : "";
@@ -89,7 +92,7 @@
     </div>
     <div class="col-md-6">
         <label for="inputAuthor" class="form-label">Author(s)</label>
-        <select class="form-select" multiple size="3" id="inputAuthor" name="aid[]" <?php echo $disableText; ?>>
+        <select class="form-select" multiple size="3" id="inputAuthor" name="aid[]" <?php echo $disableText; ?> required>
             <?php 
                 foreach($author as $item){
                     $selectedString = "";

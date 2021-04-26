@@ -29,7 +29,7 @@
             <div class="col">
                 <a class="text-decoration-none text-dark" href="details.php?mid='.$media["mid"].'">
                     <div class="card h-100 hover">
-                        <img src="'.$media["image"].'" class="card-img-top img-responsive alt="">
+                        <img src="uploads/'.$media["image"].'" class="card-img-top img-responsive alt="">
                         <div class="card-body">
                             <h5 class="card-title">'.$media["title"].'</h5>
                         </div>                     
