@@ -22,8 +22,8 @@
     }
 
     function deleteMedia() { 
-        $mid = $_POST["mid"];
-        $old_image = $_POST["image"];
+        $mid = sanitizeInput($_POST["mid"]);
+        $old_image = sanitizeInput($_POST["image"]);
 
         $sql = "DELETE FROM media
                 WHERE mid = $mid";
@@ -47,14 +47,14 @@
             $updateImageStmt = ", image='{$image->fileName}'";
         }
        
-        $title = $_POST["title"];
-        $isbn = $_POST["isbn"];
-        $description = $_POST["description"];
-        $pub_date = $_POST["pub_date"];
+        $title = sanitizeInput($_POST["title"]);
+        $isbn = sanitizeInput($_POST["isbn"]);
+        $description = sanitizeInput($_POST["description"]);
+        $pub_date = sanitizeInput($_POST["pub_date"]);
         $isAvailable = isset($_POST["isAvailable"]) && $_POST["isAvailable"] == "true" ? 1 : 0;
-        $type = $_POST["type"];
-        $pid = $_POST["pid"];
-        $mid = $_POST["mid"] ?? "";
+        $type = sanitizeInput($_POST["type"]);
+        $pid = sanitizeInput($_POST["pid"]);
+        $mid = sanitizeInput($_POST["mid"]);
 
         $sql = "UPDATE media
                 SET title = '$title'{$updateImageStmt}, isbn='$isbn', description='$description', pub_date='$pub_date', isAvailable=$isAvailable, type='$type', pid=$pid
@@ -81,14 +81,14 @@
     }
     
     function addMedia() {
-        $title = $_POST["title"];
+        $title = sanitizeInput($_POST["title"]);
         $image = file_upload($_FILES['image']);
-        $isbn = $_POST["isbn"];
-        $description = $_POST["description"];
-        $pub_date = $_POST["pub_date"];
+        $isbn = sanitizeInput($_POST["isbn"]);
+        $description = sanitizeInput($_POST["description"]);
+        $pub_date = sanitizeInput($_POST["pub_date"]);
         $isAvailable = isset($_POST["isAvailable"]) && $_POST["isAvailable"] == "true" ? 1 : 0;
-        $type = $_POST["type"];
-        $pid = $_POST["pid"];
+        $type = sanitizeInput($_POST["type"]);
+        $pid = sanitizeInput($_POST["pid"]);
 
         $sql = "INSERT INTO media (title, image, isbn, description, pub_date, isAvailable, type, pid)
                 VALUES ('$title', '$image->fileName', '$isbn', '$description', '$pub_date', $isAvailable, '$type', $pid)";
