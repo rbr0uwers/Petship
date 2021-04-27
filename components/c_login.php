@@ -14,6 +14,10 @@
     $pwErr = "";
     $email = "";
 
+    if(isset($_GET["email"])) {
+        $email = $_GET["email"];
+    }
+
     if(isset($_POST["login"])) doLogin();
 
     function doLogin() {
@@ -54,7 +58,6 @@
             return;
         }
 
-        
         if($row['status'] == 'admin'){
             $_SESSION['admin'] = $row['uid']; 
             $_SESSION['name'] = $row['fname'];      
@@ -64,22 +67,24 @@
             $_SESSION['name'] = $row['fname'];    
             header( "Location: index.php");
         }   
-
     }
 ?>
 <p class="h2">Sign In</p>
-<form method="post" class="row g3" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
+<form method="post" class="row g-3" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
     <div class="col-md-7">
         <label for="inputMail" class="form-label">Username</label>
         <input type="email" autocomplete="off" name="email" id="inputMail" class="form-control" value="<?php echo $email; ?>" required/>
-        <span class="text-danger"><?php echo $mailErr; ?></span>
+        <div class="form-text text-danger"><?php echo $mailErr; ?></div>
     </div>
     <div class="col-md-7">
         <label for="inputPass" class="form-label">Password</label>
         <input type="password" name="pw"  class="form-control" id="inputPass" minlength="6" required/>
-        <span class="text-danger"><?php echo $pwErr; ?></span>
+        <div class="form-text text-danger"><?php echo $pwErr; ?></div>
     </div>
-    <div class="col-12 mt-3 mb-5">
+    <div class="col-12 mt-3 mb-3">
         <button button class="btn btn-block btn-primary" type="submit" name="login">Sign In</button>
+    </div>
+    <div class="col-12 mb-5">
+        <p>No account yet? Sign up <a href="signup.php">here.</a></p>
     </div>
 </form>
