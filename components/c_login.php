@@ -49,6 +49,7 @@
         
         $row = $result->fetch_assoc();
         if(!password_verify($pw, $row['password'])) {
+            global $pwErr;
             $pwErr = "Wrong password. Please try again.";
             return;
         }
