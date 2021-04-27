@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <?php readfile('components/nav.html'); ?>
+    <?php include 'components/nav.php'; ?>
     <?php readfile('components/hero.html'); ?>
     <div class="container mt-3"> 
         <?php include 'components/c_modify.php'; ?>

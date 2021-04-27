@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 26. Apr 2021 um 15:33
+-- Erstellungszeit: 27. Apr 2021 um 13:01
 -- Server-Version: 10.4.18-MariaDB
 -- PHP-Version: 8.0.3
 
@@ -193,6 +193,29 @@ INSERT INTO `publisher` (`pid`, `name`, `street`, `zip`, `city`, `country`, `siz
 (0000000009, 'Murray Inc', '3 Sauthoff Drive', '23285', 'Richmond', 'United States', 'medium'),
 (0000000010, 'Gleason LLC', '5 Dixon Parkway', '90071', 'Los Angeles', 'United States', 'small');
 
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `user`
+--
+
+CREATE TABLE `user` (
+  `uid` int(10) UNSIGNED ZEROFILL NOT NULL,
+  `fName` varchar(50) NOT NULL,
+  `lName` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `status` enum('user','admin') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Daten für Tabelle `user`
+--
+
+INSERT INTO `user` (`uid`, `fName`, `lName`, `email`, `password`, `status`) VALUES
+(0000000001, 'John', 'Doe', 'j.doe@acme.com', '$2y$10$N4FT/vnJaEsMScofv.H5J.8Wjo7s6o6dtSoq3LHAnYbtTRmNknC3q', 'user'),
+(0000000002, 'Admin', 'McAdminface', 'admin@crud.com', '$2y$10$wMyh04NKI261HIDXW9n2LOkcWhV4fMn6sZqn/0.5WJfEEMtnVfW3i', 'admin');
+
 --
 -- Indizes der exportierten Tabellen
 --
@@ -224,6 +247,12 @@ ALTER TABLE `publisher`
   ADD PRIMARY KEY (`pid`);
 
 --
+-- Indizes für die Tabelle `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`uid`);
+
+--
 -- AUTO_INCREMENT für exportierte Tabellen
 --
 
@@ -244,6 +273,12 @@ ALTER TABLE `media`
 --
 ALTER TABLE `publisher`
   MODIFY `pid` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT für Tabelle `user`
+--
+ALTER TABLE `user`
+  MODIFY `uid` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints der exportierten Tabellen
