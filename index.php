@@ -1,22 +1,68 @@
-<?php session_start() ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>National Libray of CRUD</title>
+<?php
+session_start();
+require_once 'actions/db_connect.php';
+$item_size = 12;
 
-    <?php readfile('components/boot.html');?>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <?php include 'components/nav.php'; ?>
-    <?php readfile('components/hero.html'); ?>
-    <div class="container mt-3"> 
-        <?php include 'components/c_index.php'; ?>
+if(isset($_GET["show"])){
+    $offset = $_GET["show"];   
+} else {
+    $offset = 0;
+}
+
+$cnt_sql = "SELECT count(*) FROM media";
+$cnt_result = $mysqli->query($cnt_sql);
+$row_count = ($cnt_result->fetch_all())[0][0];
+
+$sql = "SELECT mid,title,image,isAvailable FROM media LIMIT $item_size OFFSET $offset";
+$result = $mysqli->query($sql);
+
+$mysqli->close();
+?>
+
+<?php
+$page_title = "National Libray of CRUD";
+include_once "components/layout_top.php";
+?>
+
+<!-- Content -->
+<div class="container mt-3"> 
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+        </ol>
+    </nav>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">   
+        <?php
+            while ($media = $result->fetch_assoc()) {
+                echo '
+                <div class="col">
+                    <a class="text-decoration-none text-dark" href="details.php?mid='.$media["mid"].'">
+                        <div class="card h-100 hover">
+                            <img src="uploads/'.$media["image"].'" class="card-img-top img-responsive alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">'.$media["title"].'</h5>
+                            </div>                     
+                        </div>
+                    </a>
+                </div>';
+            }
+        ?>   
     </div>
-    <?php readfile('components/footer.html'); ?>
-    <?php readfile('components/bootjs.html'); ?>
-</body>
-</html>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-3">
+        <?php
+            $numberOfLinks = ceil($row_count/$item_size);
+            for ($i = 0; $i < $numberOfLinks; $i++) {
+                $index = $i*$item_size;
+                $page = $i+1;
+                echo '<li class="page-item"><a class="page-link" href="index.php?show='.$index.'">'.$page.'</a></li>';
+            }
+        ?>
+        </ul>
+    </nav>
+</div>
+<!-- End of Content -->
+
+<?php
+include_once "components/layout_bottom.php";
+?>

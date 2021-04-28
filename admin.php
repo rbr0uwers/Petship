@@ -1,22 +1,62 @@
-<?php session_start() ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>National Libray of CRUD | Admin</title>
+<?php
+session_start();
+require_once 'actions/db_connect.php';
+require_once 'actions/functions.php';
 
-    <?php readfile('components/boot.html');?>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <?php include 'components/nav.php'; ?>
-    <?php readfile('components/hero.html'); ?>
-    <div class="container mt-3"> 
-        <?php include 'components/c_admin.php'; ?>
-    </div>
-    <?php readfile('components/footer.html'); ?>
-    <?php readfile('components/bootjs.html'); ?>
-</body>
-</html>
+$sql = "SELECT mid,title,isbn FROM media";
+$fetch_result = $mysqli->query($sql);
+
+if (!$fetch_result) exitGracefully();
+
+$mysqli->close();
+?>
+
+<?php
+$page_title = "National Libray of CRUD | Admin";
+include_once "components/layout_top.php";
+?>
+
+<!-- Content -->
+<div class="container mt-3"> 
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Admin</li>
+        </ol>
+    </nav>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">ISBN</th>   
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="modify.php?action=add" class="bi bi-plus-square fs-4 text-success "></a></td>
+                <td colspan="4">Add new media item</td>     
+            </tr>
+            <?php 
+                while ($media = $fetch_result->fetch_assoc()) {
+                    echo '
+                        <tr>
+                            <td>
+                                <a href="modify.php?action=delete&mid='.$media["mid"].'" class="bi bi-dash-square text-danger fs-4"></a>
+                                <a href="modify.php?action=modify&mid='.$media["mid"].'" class="bi bi-pencil-square text-secondary fs-4"></a>
+                            </td>
+                            <td>'.$media["mid"].'</td>
+                            <td>'.$media["title"].'</td>
+                            <td>'.$media["isbn"].'</td>
+                        </tr>';
+                }
+            ?>   
+        </tbody>
+    </table>
+</div>
+<!-- End of Content -->
+
+<?php
+include_once "components/layout_bottom.php";
+?>
