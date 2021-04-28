@@ -1,22 +1,15 @@
 <?php
 session_start();
-require_once 'actions/db_connect.php';
+require_once 'functions/Database.php';
+require_once 'functions/DbObject.php';
+require_once 'functions/MediaDbObject.php';
+
 $item_size = 12;
+$offset = isset($_GET["show"]) ? $_GET["show"] : 0;
 
-if(isset($_GET["show"])){
-    $offset = $_GET["show"];   
-} else {
-    $offset = 0;
-}
-
-$cnt_sql = "SELECT count(*) FROM media";
-$cnt_result = $mysqli->query($cnt_sql);
-$row_count = ($cnt_result->fetch_all())[0][0];
-
-$sql = "SELECT mid,title,image,isAvailable FROM media LIMIT $item_size OFFSET $offset";
-$result = $mysqli->query($sql);
-
-$mysqli->close();
+$media = new MediaDbObject(new Database());
+$row_count = $media->getItemCount();
+$result = $media->getItemsFromRange($item_size, $offset);
 ?>
 
 <?php
@@ -33,7 +26,7 @@ include_once "components/layout_top.php";
     </nav>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">   
         <?php
-            while ($media = $result->fetch_assoc()) {
+            foreach ($result as $media) {  
                 echo '
                 <div class="col">
                     <a class="text-decoration-none text-dark" href="details.php?mid='.$media["mid"].'">

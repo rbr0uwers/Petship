@@ -1,30 +1,16 @@
 <?php
 session_start();
-require_once 'actions/db_connect.php';
-require_once 'actions/functions.php';
+require_once 'functions/Database.php';
+require_once 'functions/DbObject.php';
+require_once 'functions/MediaDbObject.php';
+require_once 'functions/Helper.php';
 
-if(isset($_GET["mid"])) {
-    $mid = $_GET["mid"];
-} else {
-    exitGracefully();  
-}
+isset($_GET["mid"]) ? $mid = $_GET["mid"] : exitGracefully();
+  
+$media = new MediaDbObject(new Database());
+$result = $media->getMediaAndPublisherItems($mid);
 
-$sql = "SELECT * 
-        FROM media 
-        INNER JOIN media_author 
-        ON media.mid = media_author.mid 
-        INNER JOIN author 
-        ON media_author.aid = author.aid 
-        INNER JOIN publisher 
-        ON media.pid = publisher.pid 
-        WHERE media.mid=$mid";
-
-$result = $mysqli->query($sql);
-
-if ($result->num_rows == 0) exitGracefully();
-
-$media = $result->fetch_all(MYSQLI_ASSOC);
-$mysqli->close();
+if (count($result) == 0) exitGracefully();
 ?>
 
 <?php
@@ -37,12 +23,12 @@ include_once "components/layout_top.php";
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><?php echo $media[0]["title"] ?></li>
+            <li class="breadcrumb-item active" aria-current="page"><?php echo $result[0]["title"] ?></li>
         </ol>
     </nav>
     <div class="row g-4">
         <div class="col-sm-4">
-            <img class="img-responsive-big" src=<?php echo '"uploads/'.$media[0]["image"].'"' ?> alt="">
+            <img class="img-responsive-big" src=<?php echo '"uploads/'.$result[0]["image"].'"' ?> alt="">
         </div>
         <div class="col-sm-6">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -58,26 +44,26 @@ include_once "components/layout_top.php";
             </ul>
             <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab">
-                <p class="h2"><?php echo $media[0]["title"] ?></p>
-                <p class=""><?php echo $media[0]["description"] ?></p>
+                <p class="h2"><?php echo $result[0]["title"] ?></p>
+                <p class=""><?php echo $result[0]["description"] ?></p>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">ISBN: <?php echo $media[0]["isbn"] ?></li>
-                <li class="list-group-item">Published: <?php echo $media[0]["pub_date"] ?></li>
-                <li class="list-group-item">Media-Type: </i><?php echo strtoupper($media[0]["type"]) ?></li>
-                <li class="list-group-item">Availability: <?php echo $media[0]["isAvailable"]? '<i class="bi bi-emoji-smile text-success"></i>' : '<i class="bi bi-emoji-frown text-danger"></i>' ?></li>
+                <li class="list-group-item">ISBN: <?php echo $result[0]["isbn"] ?></li>
+                <li class="list-group-item">Published: <?php echo $result[0]["pub_date"] ?></li>
+                <li class="list-group-item">Media-Type: </i><?php echo strtoupper($result[0]["type"]) ?></li>
+                <li class="list-group-item">Availability: <?php echo $result[0]["isAvailable"]? '<i class="bi bi-emoji-smile text-success"></i>' : '<i class="bi bi-emoji-frown text-danger"></i>' ?></li>
             </ul>
             </div>
             <div class="tab-pane fade" id="pills-author" role="tabpanel" aria-labelledby="pills-author-tab">
                 <ul class="list-group list-group-flush">
-                    <?php foreach($media as $item) { echo '<li class="list-group-item">'.$item["fname"].' '.$item["lname"].'</li>';} ?>
+                    <?php foreach($result as $item) { echo '<li class="list-group-item">'.$item["fname"].' '.$item["lname"].'</li>';} ?>
                 </ul>
             </div>
             <div class="tab-pane fade" id="pills-publisher" role="tabpanel" aria-labelledby="pills-publisher-tab">
-                <p class="h3"><?php echo $media[0]["name"] ?></p>
+                <p class="h3"><?php echo $result[0]["name"] ?></p>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Company size: 
                         <?php 
-                            switch($media[0]["size"]) {
+                            switch($result[0]["size"]) {
                                 case "small": 
                                     echo '<i class="bi bi-house"></i>';
                                     break;
@@ -89,7 +75,7 @@ include_once "components/layout_top.php";
                             }
                         ?>
                     </li>
-                    <li class="list-group-item"><?php echo $media[0]["street"] ?> <br> <?php echo $media[0]["zip"] ?> <?php echo $media[0]["city"] ?> <br> <?php echo $media[0]["country"] ?></li>
+                    <li class="list-group-item"><?php echo $result[0]["street"] ?> <br> <?php echo $result[0]["zip"] ?> <?php echo $result[0]["city"] ?> <br> <?php echo $result[0]["country"] ?></li>
                 </ul>
             </div>
         </div>
