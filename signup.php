@@ -51,7 +51,7 @@ function createUser() {
         exit; 
     }
 
-    $userInput->setPassword($_POST["pw"], $_POST["pwrepeat"]);
+    $userInput->setPasswords($_POST["pw"], $_POST["pwrepeat"]);
     if ($userInput->error->hasError) {
         global $pwErr;
         $pwErr = $userInput->error->message;

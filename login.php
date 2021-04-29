@@ -25,11 +25,16 @@ if(isset($_POST["login"])) doLogin();
 function doLogin() {
     global $userInput;
     $userInput->setEmail($_POST["email"]);
-    $userInput->setPassword($_POST["pw"]);
+    if ($userInput->error->hasError) {
+        global $mailErr;
+        $mailErr = $userInput->error->message;
+        return;
+    }
 
-    if (empty($userInput->getPassword())) {
+    $userInput->setPassword($_POST["pw"]);
+    if ($userInput->error->hasError) {
         global $pwErr;
-        $pwErr = "Password can't be empty.";
+        $pwErr = $userInput->error->message;
         return;
     }
 
@@ -46,6 +51,7 @@ function doLogin() {
     // Houston we have a problem
     if (count($result) > 1) exitGracefully();
  
+
     if(!password_verify($userInput->getPassword(), $result[0]['password'])) {
         global $pwErr;
         $pwErr = "Wrong password. Please try again.";
@@ -74,7 +80,7 @@ include_once "components/layout_top.php";
     <form method="post" class="row g-3" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
         <div class="col-md-7">
             <label for="inputMail" class="form-label">Username</label>
-            <input type="email" autocomplete="off" name="email" id="inputMail" class="form-control" value="<?php echo $userInput->getEmail(); ?>" required/>
+            <input type="email" autocomplete="off" name="email" id="inputMail" class="form-control" value="<?php echo $userInput->getEmail() ?? ""; ?>" required/>
             <div class="form-text text-danger"><?php echo $mailErr; ?></div>
         </div>
         <div class="col-md-7">

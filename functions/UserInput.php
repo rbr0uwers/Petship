@@ -23,14 +23,19 @@ class UserInput extends Input {
         }
     }
 
-    private function validatePassword($password, $passwordRepeat){
+    private function validatePasswords($password, $passwordRepeat){
         $this->resetError();
 
         if ($password != $passwordRepeat) {
             $this->error->hasError = true;
             $this->error->message = "Passwords are not the same.";
-            return;
         }
+
+        $this->validatePassword($password);        
+    }
+
+    private function validatePassword($password){
+        $this->resetError();
 
         if (strlen($password) < 8) {
             $this->error->hasError = true;
@@ -72,10 +77,18 @@ class UserInput extends Input {
         return $this->email;
     }
 
-    public function setPassword($password, $passwordRepeat){
+    public function setPassword($password){
+        $password = sanitizeInput($password);
+        $this->validatePassword($password);
+
+        //password not hashed for login comparison TODO: make better 
+        $this->password = $this->error->hasError ? null : $password;
+    }
+
+    public function setPasswords($password, $passwordRepeat){
         $password = sanitizeInput($password);
         $passwordRepeat = sanitizeInput($passwordRepeat);
-        $this->validatePassword($password, $passwordRepeat);
+        $this->validatePasswords($password, $passwordRepeat);
 
         $this->password = $this->error->hasError ? null : password_hash($password, PASSWORD_DEFAULT);
     }
