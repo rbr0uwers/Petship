@@ -58,7 +58,7 @@ function doLogin() {
         return;
     }
 
-    if($result['status'] == 'admin'){
+    if($result[0]['status'] == 'admin'){
         $_SESSION['admin'] = $result[0]['uid']; 
         $_SESSION['name'] = $result[0]['fName'];      
         header( "Location: admin.php");
