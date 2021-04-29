@@ -29,6 +29,13 @@ abstract class DbObject {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getItems(){
+        $query = "SELECT * FROM {$this->table_name}";
+        $result = $this->conn->getConnection()->query($query);
+
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function deleteItem($id) {
         $query = "DELETE FROM " .$this->table_name. " WHERE id = ?";
         $stmt = $this->conn->prepare($query);

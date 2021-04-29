@@ -1,14 +1,11 @@
 <?php
 session_start();
-require_once 'actions/db_connect.php';
-require_once 'actions/functions.php';
+require_once 'functions/Database.php';
+require_once 'functions/DbObject.php';
+require_once 'functions/MediaDbObject.php';
 
-$sql = "SELECT mid,title,isbn FROM media";
-$fetch_result = $mysqli->query($sql);
-
-if (!$fetch_result) exitGracefully();
-
-$mysqli->close();
+$mediaDbo = new MediaDbObject(new Database());
+$media = $mediaDbo->getItems();
 ?>
 
 <?php
@@ -39,16 +36,16 @@ include_once "components/layout_top.php";
                 <td colspan="4">Add new media item</td>     
             </tr>
             <?php 
-                while ($media = $fetch_result->fetch_assoc()) {
+                foreach ($media as $item) {
                     echo '
                         <tr>
                             <td>
-                                <a href="modify.php?action=delete&mid='.$media["mid"].'" class="bi bi-dash-square text-danger fs-4"></a>
-                                <a href="modify.php?action=modify&mid='.$media["mid"].'" class="bi bi-pencil-square text-secondary fs-4"></a>
+                                <a href="modify.php?action=delete&mid='.$item["mid"].'" class="bi bi-dash-square text-danger fs-4"></a>
+                                <a href="modify.php?action=modify&mid='.$item["mid"].'" class="bi bi-pencil-square text-secondary fs-4"></a>
                             </td>
-                            <td>'.$media["mid"].'</td>
-                            <td>'.$media["title"].'</td>
-                            <td>'.$media["isbn"].'</td>
+                            <td>'.$item["mid"].'</td>
+                            <td>'.$item["title"].'</td>
+                            <td>'.$item["isbn"].'</td>
                         </tr>';
                 }
             ?>   
