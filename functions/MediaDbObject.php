@@ -31,7 +31,7 @@ class MediaDbObject extends DbObject {
 
     public function getAuthorsByMediaId($medium){
         $query = "SELECT *
-                  FROM media 
+                  FROM {$this->table_name} 
                   INNER JOIN media_author
                   ON media.mid = media_author.mid
                   WHERE {$medium->getId()} = media_author.mid";

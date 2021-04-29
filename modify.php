@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once 'functions/db_connect.php';
 require_once 'functions/Helper.php';
 require_once 'functions/Database.php';
 require_once 'functions/DbObject.php';
