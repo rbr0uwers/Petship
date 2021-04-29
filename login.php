@@ -34,7 +34,7 @@ function doLogin() {
     }
 
     $userDbo = new UserDbObject(new Database());
-    $result = $userDbo->getUserbyEmail($userInput->getEmail());
+    $result = $userDbo->getUserbyEmail($userInput);
 
     if (count($result) == 0) {
         global $mailErr;

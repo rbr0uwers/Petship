@@ -1,7 +1,11 @@
 <?php
 session_start();
-require_once 'actions/db_connect.php';
-require_once 'actions/functions.php';
+require_once 'functions/Database.php';
+require_once 'functions/DbObject.php';
+require_once 'functions/UserDbObject.php';
+require_once 'functions/Input.php';
+require_once 'functions/UserInput.php';
+require_once 'functions/Helper.php';
 
 if (isset($_SESSION['user'])) {
     header("Location: index.php");
@@ -9,81 +13,54 @@ if (isset($_SESSION['user'])) {
 }
 if (isset($_SESSION['admin'])) {
     header("Location: admin.php");
+    exit;
 }
 
-$pwErr = "";
-$mailErr = "";
-$fNameErr = "";
-$lNameErr = "";
-$email = "";
-$fName = "";
-$lName = "";
-
+$pwErr = $mailErr = $fNameErr = $lNameErr = "";
+$userInput = new UserInput();
 if(isset($_POST["signup"])) createUser();
 
 function createUser() {
-    global $fName;
-    $fName = sanitizeInput($_POST["fName"]);
-    if (strlen($fName) < 3) {
+    global $userInput;
+    $userInput->setfName($_POST["fName"]);
+    if ($userInput->error->hasError) {
         global $fNameErr;
-        $fNameErr = "Minimum character 3 characters are required.";
+        $fNameErr = $userInput->error->message;
         return;
     }
 
-    global $lName;
-    $lName = sanitizeInput($_POST["lName"]);
-    if (strlen($lName) < 3) {
+    $userInput->setlName($_POST["lName"]);
+    if ($userInput->error->hasError) {
         global $lNameErr;
-        $lNameErr = "Minimum character 3 characters are required.";
+        $lNameErr = $userInput->error->message;
         return;
     }
 
-    global $email;
-    $email = sanitizeInput($_POST["email"]);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $userInput->setEmail($_POST["email"]);
+    if ($userInput->error->hasError) {
         global $mailErr;
-        $mailErr = "Please enter valid email address.";
+        $mailErr = $userInput->error->message;
         return;
     }
 
-    $sql = "SELECT email
-            FROM user 
-            WHERE email = '$email'";
+    $userDbo = new UserDbObject(new Database());
+    $result = $userDbo->getUserbyEmail($userInput);
 
-    global $mysqli;
-    $result = $mysqli->query($sql);
-    if ($result->num_rows > 0) {
-        global $email;
-        header("location: login.php?email={$email}");
+    if (count($result) == 1) {
+        header("location: login.php?email={$userInput->getEmail()}");
         exit; 
     }
 
-    $pw = sanitizeInput($_POST["pw"]);
-    $pwrepeat = sanitizeInput($_POST["pwrepeat"]);
-    if ($pw != $pwrepeat) {
+    $userInput->setPassword($_POST["pw"], $_POST["pwrepeat"]);
+    if ($userInput->error->hasError) {
         global $pwErr;
-        $pwErr = "Passwords are not the same.";
-        return;
-    }
-    if (strlen($pw) < 8) {
-        global $pwErr;
-        $pwErr = "Minimum character 8 characters are required.";
+        $pwErr = $userInput->error->message;
         return;
     }
 
-    $hashed_pw = password_hash($pw, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO user (fName, lName, email, password, status)
-            VALUES ('$fName', '$lName', '$email', '$hashed_pw', 'user')";
-
-    global $mysqli;
-    $result = $mysqli->query($sql);
-    $result ?: exitGracefully();
-
-    $new_mid = $mysqli->insert_id;
-    $mysqli->close();
-
+    $new_mid = $userDbo->createNewUser($userInput);
     $_SESSION['user'] = $new_mid; 
-    $_SESSION['name'] = $fName;    
+    $_SESSION['name'] = $userInput->getfName();    
     header( "Location: index.php");
 }
 ?>
@@ -99,17 +76,17 @@ include_once "components/layout_top.php";
     <form method="post" class="row g-3" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
         <div class="col-md-6">
             <label for="inputFname" class="form-label">First name</label>
-            <input type="text" class="form-control" name="fName" id="inputFname" value="<?php echo $fName ?>" required>
+            <input type="text" class="form-control" name="fName" id="inputFname" value="<?php echo $userInput->getfName() ?? "" ?>" required>
             <div class="form-text text-danger"><?php echo $fNameErr; ?></div>
         </div>
         <div class="col-md-6">
             <label for="inputLname" class="form-label">Last name</label>
-            <input type="text" class="form-control" name="lName" id="inputLname" value="<?php echo $lName ?>" required>
+            <input type="text" class="form-control" name="lName" id="inputLname" value="<?php echo $userInput->getlName() ?? "" ?>" required>
             <div class="form-text text-danger"><?php echo $lNameErr; ?></div>
         </div>
         <div class="col-md-6">
             <label for="inputMail" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" id="inputMail" value="<?php echo $email ?>" required>
+            <input type="email" class="form-control" name="email" id="inputMail" value="<?php echo $userInput->getEmail() ?? "" ?>" required>
             <div class="form-text text-danger"><?php echo $mailErr; ?></div>
         </div>
         <div class="w-100"></div>

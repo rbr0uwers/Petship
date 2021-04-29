@@ -5,13 +5,22 @@ class UserDbObject extends DbObject {
         $this->table_name = "user"; 
     }
 
-    public function getUserbyEmail($email){
+    public function getUserbyEmail($user){
         $query = "SELECT *
-                  FROM user 
-                  WHERE email = '{$email}'";
+                  FROM {$this->table_name}
+                  WHERE email = '{$user->getEmail()}'";
         $result = $this->conn->getConnection()->query($query);
 
         return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function createNewUser($user){
+        $query = "INSERT INTO user (fName, lName, email, password, status)
+        VALUES ('{$user->getfName()}', '{$user->getlName()}', '{$user->getEmail()}', '{$user->getPassword()}', 'user')";
+
+        $result = $this->conn->getConnection()->query($query);
+
+        return $this->conn->getConnection()->insert_id;
     }
 }
 ?>
