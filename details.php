@@ -1,14 +1,18 @@
 <?php
 session_start();
+require_once 'functions/Helper.php';
 require_once 'functions/Database.php';
 require_once 'functions/DbObject.php';
 require_once 'functions/MediaDbObject.php';
-require_once 'functions/Helper.php';
+require_once 'functions/Input.php';
+require_once 'functions/MediaInput.php';
 
-isset($_GET["mid"]) ? $mid = $_GET["mid"] : exitGracefully();
-  
+if (!isset($_GET["mid"])) exitGracefully();
+
+$mediaInput = new MediaInput();
+$mediaInput->setId($_GET["mid"]);
 $media = new MediaDbObject(new Database());
-$result = $media->getMediaAndPublisherItems($mid);
+$result = $media->getMediaAndPublisherItems($mediaInput);
 
 if (count($result) == 0) exitGracefully();
 ?>

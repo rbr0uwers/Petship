@@ -1,8 +1,14 @@
 <?php
 session_start();
-require_once 'actions/db_connect.php';
-require_once 'actions/functions.php';
-require_once 'actions/file_upload.php';
+require_once 'functions/Helper.php';
+require_once 'functions/Database.php';
+require_once 'functions/DbObject.php';
+require_once 'functions/MediaDbObject.php';
+require_once 'functions/AuthorDbObject.php';
+require_once 'functions/MediaAuthorDbObject.php';
+require_once 'functions/PublisherDbObject.php';
+require_once 'functions/Input.php';
+require_once 'functions/MediaInput.php';
 
 if(!isset($_POST["action"])) exitGracefully();
 
@@ -23,93 +29,79 @@ switch($_POST["action"]) {
 }
 
 function deleteMedia() { 
-    $mid = sanitizeInput($_POST["mid"]);
-    $old_image = sanitizeInput($_POST["image"]);
+    $mediaInput = new MediaInput();
+    $mediaInput->setId($_POST["mid"]);
+    $mediaInput->setOldImage($_POST["image"]);
+    $media = new MediaDbObject(new Database());
+    $media->deleteItembyId($mediaInput);
 
-    $sql = "DELETE FROM media
-            WHERE mid = $mid";
-    
-    global $mysqli;
-    $mysqli->query($sql) ?: exitGracefully();
-
-    if ($old_image != "generic_book.jpg") unlink("uploads/{$old_image}");
+    if ($mediaInput->getOldImage() != "generic_book.jpg") unlink("uploads/{$mediaInput->getOldImage()}");
 
     global $message;
-    $message = "Media item (ID: {$mid}) succesfully deleted.";
+    $message = "Media item (ID: {$mediaInput->getId()}) succesfully deleted.";
 }
 
 function updateMedia() {
-    $image = file_upload($_FILES['image']); 
-    $old_image = $_POST["image"];
-    $updateImageStmt = "";
+    $mediaInput = new MediaInput();
+    $mediaInput->setImage(file_upload($_FILES['image']));
+    $mediaInput->setOldImage($_POST["image"]);
+    $updateImage = false;
 
-    if($image->fileName != 'generic_book.jpg') {
-        if ($old_image != "generic_book.jpg")  unlink("uploads/{$old_image}");
-        $updateImageStmt = ", image='{$image->fileName}'";
+    if($mediaInput->getImage()->fileName != 'generic_book.jpg') {
+        if ($mediaInput->getOldImage() != "generic_book.jpg")  unlink("uploads/{$mediaInput->getOldImage()}");
+        $updateImage = true;
     }
     
-    $title = sanitizeInput($_POST["title"]);
-    $isbn = sanitizeInput($_POST["isbn"]);
-    $description = sanitizeInput($_POST["description"]);
-    $pub_date = sanitizeInput($_POST["pub_date"]);
-    $isAvailable = isset($_POST["isAvailable"]) && $_POST["isAvailable"] == "true" ? 1 : 0;
-    $type = sanitizeInput($_POST["type"]);
-    $pid = sanitizeInput($_POST["pid"]);
-    $mid = sanitizeInput($_POST["mid"]);
+    $mediaInput->setTitle($_POST["title"]);
+    $mediaInput->setIsbn($_POST["isbn"]);
+    $mediaInput->setDescription($_POST["description"]);
+    $mediaInput->setPubDate($_POST["pub_date"]);
+    $mediaInput->setIsAvailable((isset($_POST["isAvailable"]) ? $_POST["isAvailable"] : 0));
+    $mediaInput->setType($_POST["type"]);
+    $mediaInput->setPid($_POST["pid"]);
+    $mediaInput->setId($_POST["mid"]);
 
-    $sql = "UPDATE media
-            SET title = '$title'{$updateImageStmt}, isbn='$isbn', description='$description', pub_date='$pub_date', isAvailable=$isAvailable, type='$type', pid=$pid
-            WHERE mid=$mid";
-
-    global $mysqli;
-    $mysqli->query($sql) ?: exitGracefully($mysqli->error);
+    $media = new MediaDbObject(new Database());
+    $media->updateMediaById($mediaInput, $updateImage);
 
     //Delete old media author connections and recreate new ones
     //TODO: Find logic to check real changes upfront
-    $sql = "DELETE FROM media_author
-            WHERE mid = $mid";
-    $mysqli->query($sql);
+    $media_author = new MediaAuthorDbObject(new Database());
+    $media_author->deleteItembyId($mediaInput);
 
     $aids = $_POST["aid"];
     foreach ($aids as $aid) {
-        $sql = "INSERT INTO media_author (mid, aid)
-                VALUES ($mid, $aid)";
-        $mysqli->query($sql);
+        $media_author->insertNewMediaAuthor($mediaInput, $aid);
     }
 
     global $message;
-    $message = "Media item (ID: $mid) succesfully updated.";
+    $message = "Media item (ID: {$mediaInput->getId()}) succesfully updated.";
 }
 
 function addMedia() {
-    $title = sanitizeInput($_POST["title"]);
-    $image = file_upload($_FILES['image']);
-    $isbn = sanitizeInput($_POST["isbn"]);
-    $description = sanitizeInput($_POST["description"]);
-    $pub_date = sanitizeInput($_POST["pub_date"]);
-    $isAvailable = isset($_POST["isAvailable"]) && $_POST["isAvailable"] == "true" ? 1 : 0;
-    $type = sanitizeInput($_POST["type"]);
-    $pid = sanitizeInput($_POST["pid"]);
+    $mediaInput = new MediaInput();
+    $mediaInput->setTitle($_POST["title"]);
+    $mediaInput->setImage(file_upload($_FILES['image']));
+    $mediaInput->setIsbn($_POST["isbn"]);
+    $mediaInput->setDescription($_POST["description"]);
+    $mediaInput->setPubDate($_POST["pub_date"]);
+    $mediaInput->setIsAvailable($_POST["isAvailable"]);
+    $mediaInput->setType($_POST["type"]);
+    $mediaInput->setPid($_POST["pid"]);
 
-    $sql = "INSERT INTO media (title, image, isbn, description, pub_date, isAvailable, type, pid)
-            VALUES ('$title', '$image->fileName', '$isbn', '$description', '$pub_date', $isAvailable, '$type', $pid)";
-    
-    global $mysqli;
-    $mysqli->query($sql) ?: exitGracefully();
-    
-    $new_mid = $mysqli->insert_id;
+    $media = new MediaDbObject(new Database());
+    $new_mid = $media->createNewMedia($mediaInput);
+    $mediaInput->setId($new_mid);
+
+    $media_author = new MediaAuthorDbObject(new Database());
     $aids = $_POST["aid"];
     foreach ($aids as $aid) {
-        $sql = "INSERT INTO media_author (mid, aid)
-                VALUES ($new_mid, $aid)";
-        $mysqli->query($sql);
+        $media_author->insertNewMediaAuthor($mediaInput, $aid);
     }
 
     global $message;
-    $message = "Media item succesfully created. New ID: $new_mid";
+    $message = "Media item succesfully created. New ID: {$mediaInput->getId()}";
 } 
-
-$mysqli->close();
 ?>
 
 <?php

@@ -1,5 +1,6 @@
 <?php
 class UserInput extends Input {
+    private $id;
     private $fName;
     private $lName;
     private $email;
@@ -45,7 +46,7 @@ class UserInput extends Input {
     }
     
     public function setfName($fName){
-        $result = sanitizeInput($fName);
+        $fName = $this->sanitizeInput($fName);
         $this->validateName($fName);
 
         $this->fName = $this->error->hasError ? null : $fName;
@@ -56,7 +57,7 @@ class UserInput extends Input {
     }
 
     public function setlName($lName){
-        $lName = sanitizeInput($lName);
+        $lName = $this->sanitizeInput($lName);
         $this->validateName($lName);
 
         $this->lName = $this->error->hasError ? null : $lName;
@@ -67,7 +68,7 @@ class UserInput extends Input {
     }
 
     public function setEmail($email){
-        $email = sanitizeInput($email);
+        $email = $this->sanitizeInput($email);
         $this->validateEmail($email);
 
         $this->email = $this->error->hasError ? null : $email;
@@ -78,7 +79,7 @@ class UserInput extends Input {
     }
 
     public function setPassword($password){
-        $password = sanitizeInput($password);
+        $password = $this->sanitizeInput($password);
         $this->validatePassword($password);
 
         //password not hashed for login comparison TODO: make better 
@@ -86,8 +87,8 @@ class UserInput extends Input {
     }
 
     public function setPasswords($password, $passwordRepeat){
-        $password = sanitizeInput($password);
-        $passwordRepeat = sanitizeInput($passwordRepeat);
+        $password = $this->sanitizeInput($password);
+        $passwordRepeat = $this->sanitizeInput($passwordRepeat);
         $this->validatePasswords($password, $passwordRepeat);
 
         $this->password = $this->error->hasError ? null : password_hash($password, PASSWORD_DEFAULT);
@@ -95,6 +96,10 @@ class UserInput extends Input {
 
     public function getPassword () {
         return $this->password;
+    }
+
+    public function getId() {
+        return $this->id;
     }
 
 }

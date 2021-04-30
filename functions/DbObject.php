@@ -36,13 +36,10 @@ abstract class DbObject {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function deleteItem($id) {
-        $query = "DELETE FROM " .$this->table_name. " WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $this->id);
-        $result = $stmt->execute();
-
-        return $result;
+    public function deleteItembyId($input) {
+        // TODO adapt (m)id to generic id in db tables.
+        $query = "DELETE FROM {$this->table_name} WHERE mid = {$input->getId()}";
+        $result = $this->conn->getConnection()->query($query);
     }
 }
 ?>

@@ -21,5 +21,7 @@ abstract class Input {
 
         return $result;
     }
+
+    abstract function getId();
 }
 ?>

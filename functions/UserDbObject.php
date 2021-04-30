@@ -15,12 +15,13 @@ class UserDbObject extends DbObject {
     }
 
     public function createNewUser($user){
-        $query = "INSERT INTO user (fName, lName, email, password, status)
+        $query = "INSERT INTO {$this->table_name} (fName, lName, email, password, status)
         VALUES ('{$user->getfName()}', '{$user->getlName()}', '{$user->getEmail()}', '{$user->getPassword()}', 'user')";
 
         $result = $this->conn->getConnection()->query($query);
 
         return $this->conn->getConnection()->insert_id;
     }
+    
 }
 ?>
