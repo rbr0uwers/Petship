@@ -15,17 +15,23 @@ abstract class DbObject {
         return $result;
     }
 
-    public function selectItemCount(){
+    public function selectItemCount($showSeniorsOnly){
+        // temp solution, can be made prettier in future...
+        $queryAddition = $showSeniorsOnly ? "WHERE timestampdiff(YEAR,birthdate,now()) > 8" : "";
         $query = "SELECT count(*) 
-                  FROM {$this->table_name}";
+                  FROM {$this->table_name}
+                  {$queryAddition}";
         $result = $this->conn->getConnection()->query($query);
 
         return $result->fetch_all()[0][0];
     }
 
-    public function selectItemsFromRange($limit, $offset){
+    public function selectItemsFromRange($limit, $offset, $showSeniorsOnly){
+        // temp solution, can be made prettier in future...
+        $queryAddition = $showSeniorsOnly ? "WHERE timestampdiff(YEAR,birthdate,now()) > 8" : "";
         $query = "SELECT * 
-                  FROM {$this->table_name} 
+                  FROM {$this->table_name}
+                  {$queryAddition} 
                   LIMIT {$limit} OFFSET {$offset}";
         $result = $this->conn->getConnection()->query($query);
 

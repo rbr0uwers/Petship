@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 30. Apr 2021 um 16:54
+-- Erstellungszeit: 30. Apr 2021 um 20:54
 -- Server-Version: 10.4.18-MariaDB
 -- PHP-Version: 8.0.3
 
@@ -94,9 +94,9 @@ INSERT INTO `pet` (`id`, `name`, `image`, `description`, `birthdate`, `breed`, `
 (0000000024, 'Fayth', '608c175880cff.jpg', 'Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl. Nunc rhoncus dui vel sem. Sed sagittis. Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci. Nullam molestie nibh in lectus. Pellentesque at nulla. Suspendisse potenti.', '2007-08-05', 'Hartebeest, red', 'large', 0000000009, NULL),
 (0000000026, 'Kalila', '608c1782ae89f.jpg', 'Aenean sit amet justo. Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices.', '2010-05-05', 'Tortoise, burmese black mountain', 'large', 0000000011, NULL),
 (0000000027, 'Reamonn', '608c17e34f789.jpg', 'Vivamus tortor. Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est.', '2013-03-19', 'Lemur, brown', 'small', 0000000012, NULL),
-(0000000028, 'Suzette', '608c18229eddc.jpg', 'Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc.', '2011-02-15', 'Gecko, bent-toed', 'large', 0000000013, NULL),
+(0000000028, 'Suzette', '608c18229eddc.jpg', 'Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc.', '2018-02-15', 'Gecko, bent-toed', 'large', 0000000013, NULL),
 (0000000029, 'Candace', '608c1851325e5.jpg', 'Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum.', '2005-05-27', 'Fox, savanna', 'small', 0000000014, NULL),
-(0000000030, 'Daniele', '608c18b1d2e11.jpg', 'Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat. In congue. Etiam justo.', '2006-12-06', 'Eastern cottontail rabbit', 'small', 0000000015, NULL),
+(0000000030, 'Daniele', '608c18b1d2e11.jpg', 'Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat. In congue. Etiam justo.', '2017-12-06', 'Eastern cottontail rabbit', 'small', 0000000015, NULL),
 (0000000035, 'Olivette', '608c1951c1e88.jpg', 'Aliquam non mauris. Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis. Fusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl.', '2018-07-26', 'Malay squirrel', 'small', 0000000028, NULL),
 (0000000036, 'Antonia', '608c19c039030.jpg', 'Vivamus in felis eu sapien cursus vestibulum. Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy. Integer non velit. Donec diam neque, vestibulum eget, vulputate ut, ultrices vel, augue.', '2020-01-07', 'Glider, feathertail', 'small', 0000000029, NULL);
 
@@ -120,7 +120,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `password`, `status`) VALUES
-(0000000001, 'John', 'Doe', 'j.doe@acme.com', '$2y$10$N4FT/vnJaEsMScofv.H5J.8Wjo7s6o6dtSoq3LHAnYbtTRmNknC3q', 'admin');
+(0000000001, 'John', 'Doe', 'j.doe@acme.com', '$2y$10$N4FT/vnJaEsMScofv.H5J.8Wjo7s6o6dtSoq3LHAnYbtTRmNknC3q', 'admin'),
+(0000000003, 'Heinz', 'Sielmann', 'h.sielmann@petlover.at', '$2y$10$Bp2NiBkITQRS/O4U/vpQx.Vr893QHKAqf0FJM7zKfB2o9Gj7q8kjS', 'user');
 
 --
 -- Indizes der exportierten Tabellen
@@ -137,8 +138,8 @@ ALTER TABLE `address`
 --
 ALTER TABLE `pet`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `aid` (`aid`),
-  ADD UNIQUE KEY `uid` (`uid`);
+  ADD KEY `aid` (`aid`) USING BTREE,
+  ADD KEY `uid` (`uid`) USING BTREE;
 
 --
 -- Indizes für die Tabelle `user`
@@ -166,7 +167,7 @@ ALTER TABLE `pet`
 -- AUTO_INCREMENT für Tabelle `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints der exportierten Tabellen

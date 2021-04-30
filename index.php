@@ -12,10 +12,11 @@ if (!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
 } 
 
 $offset = isset($_GET["show"]) ? $_GET["show"] : 0;
-
+$showSeniorsOnly = (isset($_GET["seniors"]) && $_GET["seniors"] == "true") ? true : false;
+console_log($showSeniorsOnly);
 $petDbObject = new PetDbObject(new Database());
-$row_count = $petDbObject->selectItemCount();
-$result = $petDbObject->selectItemsFromRange(ITEM_SIZE, $offset);
+$row_count = $petDbObject->selectItemCount($showSeniorsOnly);
+$result = $petDbObject->selectItemsFromRange(ITEM_SIZE, $offset, $showSeniorsOnly);
 ?>
 
 <?php
@@ -25,11 +26,17 @@ include_once "components/layout_top.php";
 
 <!-- Content -->
 <div class="container mt-3"> 
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-        </ol>
-    </nav>
+    <div class="d-flex flex-row">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+            </ol>
+        </nav>
+        <div class="form-check ms-auto">
+            <label class="form-check-label" for="seniorCheck">Show Seniors only</label>
+            <input class="form-check-input" type="checkbox" id="seniorCheck" onclick="handleSeniors(this)" checked="true">
+        </div>
+    </div>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">   
         <?php
             foreach ($result as $pet) {  
@@ -60,6 +67,18 @@ include_once "components/layout_top.php";
         </ul>
     </nav>
 </div>
+<script>
+    function handleSeniors(checkbox) {
+        window.location.href = `index.php?seniors=${checkbox.checked}`;
+    }
+    
+    if (window.location.href.indexOf("seniors=true") > -1) {
+        document.getElementById("seniorCheck").checked = true;
+    } else {
+        document.getElementById("seniorCheck").checked = false;
+    }
+</script>
+ 
 <!-- End of Content -->
 
 <?php
