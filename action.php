@@ -1,14 +1,13 @@
 <?php
 session_start();
-require_once 'functions/Helper.php';
+require_once 'functions/Globals.php';
 require_once 'functions/Database.php';
-require_once 'functions/DbObject.php';
-require_once 'functions/MediaDbObject.php';
-require_once 'functions/AuthorDbObject.php';
-require_once 'functions/MediaAuthorDbObject.php';
-require_once 'functions/PublisherDbObject.php';
-require_once 'functions/Input.php';
-require_once 'functions/MediaInput.php';
+require_once 'functions/dbobject/DbObject.php';
+require_once 'functions/dbobject/PetDbObject.php';
+require_once 'functions/dbobject/AddressDbObject.php';
+require_once 'functions/input/Input.php';
+require_once 'functions/input/PetInput.php';
+require_once 'functions/input/AddressInput.php';
 
 if (isset($_SESSION['user'])) {
     header("Location: index.php");
@@ -25,96 +24,98 @@ $message = "";
 
 switch($_POST["action"]) {
     case "delete":
-        deleteMedia();
+        deletePet();
         break;
     case "modify":
-        updateMedia();
+        updatePet();
         break;
     case "add":
-        addMedia();
+        addPet();
         break;
     default:
         exitGracefully();
 }
 
-function deleteMedia() { 
-    $mediaInput = new MediaInput();
-    $mediaInput->setId($_POST["mid"]);
-    $mediaInput->setOldImage($_POST["image"]);
-    $media = new MediaDbObject(new Database());
-    $media->deleteItembyId($mediaInput);
+function deletePet() { 
+    $petInput = new PetInput();
+    $petInput->setId($_POST["id"]);
+    $petInput->setOldImage($_POST["image"]);
+    $petDbObject = new PetDbObject(new Database());
+    $petDbObject->deleteItembyId($petInput);
 
-    if ($mediaInput->getOldImage() != "generic_book.jpg") unlink("uploads/{$mediaInput->getOldImage()}");
+    if ($petInput->getOldImage() != DEFAULT_IMAGE) unlink("uploads/{$petInput->getOldImage()}");
 
     global $message;
-    $message = "Media item (ID: {$mediaInput->getId()}) succesfully deleted.";
+    $message = "Pet (ID: {$petInput->getId()}) succesfully deleted.";
 }
 
-function updateMedia() {
-    $mediaInput = new MediaInput();
-    $mediaInput->setImage(file_upload($_FILES['image']));
-    $mediaInput->setOldImage($_POST["image"]);
-    $updateImage = false;
+function updatePet() {
+    $petInput = new PetInput();
+    $petInput->setImage(file_upload($_FILES['image']));
+    $petInput->setOldImage($_POST["image"]);
 
-    if($mediaInput->getImage()->fileName != 'generic_book.jpg') {
-        if ($mediaInput->getOldImage() != "generic_book.jpg")  unlink("uploads/{$mediaInput->getOldImage()}");
+    $updateImage = false;
+    if($petInput->getImage()->fileName != DEFAULT_IMAGE) {
+        if ($petInput->getOldImage() != DEFAULT_IMAGE)  unlink("uploads/{$petInput->getOldImage()}");
         $updateImage = true;
     }
     
-    $mediaInput->setTitle($_POST["title"]);
-    $mediaInput->setIsbn($_POST["isbn"]);
-    $mediaInput->setDescription($_POST["description"]);
-    $mediaInput->setPubDate($_POST["pub_date"]);
-    $mediaInput->setIsAvailable((isset($_POST["isAvailable"]) ? $_POST["isAvailable"] : 0));
-    $mediaInput->setType($_POST["type"]);
-    $mediaInput->setPid($_POST["pid"]);
-    $mediaInput->setId($_POST["mid"]);
+    $petInput->setName($_POST["name"]);
+    $petInput->setBreed($_POST["breed"]);
+    $petInput->setDescription($_POST["description"]);
+    $petInput->setBirthdate($_POST["birthdate"]);
+    $petInput->setSize($_POST["size"]);
+    $petInput->setAid($_POST["aid"]);
+    $petInput->setUid($_POST["uid"]);
+    $petInput->setId($_POST["id"]);
 
-    $media = new MediaDbObject(new Database());
-    $media->updateMediaById($mediaInput, $updateImage);
+    $petDbObject = new PetDbObject(new Database());
+    $petDbObject->updatePetById($petInput, $updateImage);
 
-    //Delete old media author connections and recreate new ones
-    //TODO: Find logic to check real changes upfront
-    $media_author = new MediaAuthorDbObject(new Database());
-    $media_author->deleteItembyId($mediaInput);
+    $addressInput = new AddressInput();
+    $addressInput->setId($_POST["aid"]);
+    $addressInput->setZip($_POST["zip"]);
+    $addressInput->setStreet($_POST["street"]);
+    $addressInput->setCity($_POST["city"]);
 
-    $aids = $_POST["aid"];
-    foreach ($aids as $aid) {
-        $media_author->insertNewMediaAuthor($mediaInput, $aid);
-    }
+    $addressDbObject = new AddressDbObject(new Database());
+    $addressDbObject->updateAddressById($addressInput);
 
     global $message;
-    $message = "Media item (ID: {$mediaInput->getId()}) succesfully updated.";
+    $message = "Pet (ID: {$petInput->getId()}) and Address (ID: {$addressInput->getId()}) succesfully updated.";
 }
 
-function addMedia() {
-    $mediaInput = new MediaInput();
-    $mediaInput->setTitle($_POST["title"]);
-    $mediaInput->setImage(file_upload($_FILES['image']));
-    $mediaInput->setIsbn($_POST["isbn"]);
-    $mediaInput->setDescription($_POST["description"]);
-    $mediaInput->setPubDate($_POST["pub_date"]);
-    $mediaInput->setIsAvailable($_POST["isAvailable"]);
-    $mediaInput->setType($_POST["type"]);
-    $mediaInput->setPid($_POST["pid"]);
+function addPet() {
+    $addressInput = new AddressInput();
+    $addressInput->setZip($_POST["zip"]);
+    $addressInput->setStreet($_POST["street"]);
+    $addressInput->setCity($_POST["city"]);
 
-    $media = new MediaDbObject(new Database());
-    $new_mid = $media->createNewMedia($mediaInput);
-    $mediaInput->setId($new_mid);
+    $addressDbObject = new AddressDbObject(new Database());
+    $address_id = $addressDbObject->insertNewAddress($addressInput);
+    $addressInput->setId($address_id);
 
-    $media_author = new MediaAuthorDbObject(new Database());
-    $aids = $_POST["aid"];
-    foreach ($aids as $aid) {
-        $media_author->insertNewMediaAuthor($mediaInput, $aid);
-    }
+    $petInput = new PetInput();;
+    $petInput->setName($_POST["name"]);
+    $petInput->setBreed($_POST["breed"]);
+    $petInput->setImage(file_upload($_FILES['image']));
+    $petInput->setDescription($_POST["description"]);
+    $petInput->setBirthdate($_POST["birthdate"]);
+    $petInput->setSize($_POST["size"]);
+    $petInput->setAid($addressInput->getId());
+    $petInput->setUid($_POST["uid"]);
+
+    $petDbObject = new PetDbObject(new Database());
+    $pet_id = $petDbObject->insertNewPet($petInput);
+    $petInput->setId($pet_id);
 
     global $message;
-    $message = "Media item succesfully created. New ID: {$mediaInput->getId()}";
+    $message = "Pet and Address successfully created. New Pet ID: {$petInput->getId()}, new Address ID: {$addressInput->getId()}";
 } 
 ?>
 
 <?php
-$page_title = "National Libray of CRUD";
+$page_title = "Petship";
 include_once "components/layout_top.php";
 ?>
 

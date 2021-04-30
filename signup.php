@@ -1,11 +1,11 @@
 <?php
 session_start();
+require_once 'functions/Globals.php';
 require_once 'functions/Database.php';
-require_once 'functions/DbObject.php';
-require_once 'functions/UserDbObject.php';
-require_once 'functions/Input.php';
-require_once 'functions/UserInput.php';
-require_once 'functions/Helper.php';
+require_once 'functions/dbobject/DbObject.php';
+require_once 'functions/dbobject/UserDbObject.php';
+require_once 'functions/input/Input.php';
+require_once 'functions/input/UserInput.php';
 
 if (isset($_SESSION['user'])) {
     header("Location: index.php");
@@ -66,7 +66,7 @@ function createUser() {
 ?>
 
 <?php
-$page_title = "National Libray of CRUD | Signup";
+$page_title = "Petship | Signup";
 include_once "components/layout_top.php";
 ?>
 

@@ -1,7 +1,7 @@
 <?php
 class Database{
     private $hostname = "localhost";
-    private $dbname = "crud_library";
+    private $dbname = "cr11_petadoption_ronnybrouwers";
     private $username = "root";
     private $password = "";
     private $conn;
