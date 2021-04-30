@@ -34,6 +34,14 @@ class PetDbObject extends DbObject {
         $result = $this->conn->getConnection()->query($query);
     }
 
+    public function adoptPet($pet){
+        $query = "UPDATE {$this->table_name}
+                  SET uid={$pet->getUid()}
+                  WHERE id={$pet->getId()}";
+                  
+        $result = $this->conn->getConnection()->query($query);
+    }
+
     public function insertNewPet($pet){
         $query = "INSERT INTO {$this->table_name} 
                   (name, image, breed, description, birthdate, size, aid, uid)
