@@ -4,6 +4,15 @@ require_once 'functions/Database.php';
 require_once 'functions/DbObject.php';
 require_once 'functions/MediaDbObject.php';
 
+if (isset($_SESSION['user'])) {
+    header("Location: index.php");
+    exit;
+} 
+if (!isset($_SESSION['admin'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $mediaDbo = new MediaDbObject(new Database());
 $media = $mediaDbo->getItems();
 ?>

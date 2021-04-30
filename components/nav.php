@@ -8,7 +8,7 @@
     	</button>
     	<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       		<div class="navbar-nav w-100">
-      			<a class="nav-link fs-5" aria-current="page" href="index.php">Home</a>
+			  	<?php if(isset($_SESSION['admin']) || isset($_SESSION['user'])) echo '<a class="nav-link fs-5" aria-current="page" href="index.php">Home</a>' ?>
 				<?php if(isset($_SESSION['admin'])) echo '<a class="nav-link fs-5" href="admin.php">Admin</a>' ?>
         		<?php 
 					if(isset($_SESSION['admin']) || isset($_SESSION['user'])) {

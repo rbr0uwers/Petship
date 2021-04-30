@@ -7,6 +7,11 @@ require_once 'functions/MediaDbObject.php';
 require_once 'functions/Input.php';
 require_once 'functions/MediaInput.php';
 
+if (!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
+    header("Location: login.php");
+    exit;
+}
+
 if (!isset($_GET["mid"])) exitGracefully();
 
 $mediaInput = new MediaInput();

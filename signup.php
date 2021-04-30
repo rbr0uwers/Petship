@@ -10,7 +10,7 @@ require_once 'functions/Helper.php';
 if (isset($_SESSION['user'])) {
     header("Location: index.php");
     exit;
-}
+} 
 if (isset($_SESSION['admin'])) {
     header("Location: admin.php");
     exit;
