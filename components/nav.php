@@ -13,14 +13,15 @@
         		<?php 
 					if(isset($_SESSION['admin']) || isset($_SESSION['user'])) {
           				echo '
-							<div class="dropdown ms-auto">
+							<div class="dropdown ms-auto d-none d-sm-none d-md-block">
 								<a class="dropdown-toggle bi bi-person-circle fs-5 nav-link" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"> '.$_SESSION["name"].'</a>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 									<li><a class="dropdown-item" href="logout.php?logout">Logout</a></li>
 								</ul>
-							</div>';
+							</div>
+							<a class="nav-link d-block fs-5 d-sm-block d-md-none" href="logout.php?logout">Logout '.$_SESSION["name"].'</a>';
 					} else {
-						echo '<a class="nav-link fs-5 ms-auto bi bi-person-circle" href="login.php"></a>';
+						echo '<a class="nav-link fs-5 ms-md-auto bi bi-person-circle" href="login.php"></a>';
 					}
 				?>
 			</div>
