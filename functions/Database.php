@@ -1,8 +1,8 @@
 <?php
 class Database{
-    private $hostname = "localhost";
-    private $dbname = "cr11_petadoption_ronnybrouwers";
-    private $username = "root";
+    private $hostname = "";
+    private $dbname = "";
+    private $username = "";
     private $password = "";
     private $conn;
 

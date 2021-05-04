@@ -91,8 +91,18 @@ include_once "components/layout_top.php";
         <div class="col-12 mt-3 mb-3">
             <button button class="btn btn-block btn-primary" type="submit" name="login">Sign In</button>
         </div>
-        <div class="col-12 mb-5">
-            <p>No account yet? Sign up <a href="signup.php">here.</a></p>
+        <div class="col-12">
+            <p>No account yet? Sign up <a href="signup.php">here.</a> or use one of the <a data-bs-toggle="collapse" href="#userCollapse" role="button" aria-expanded="false" aria-controls="userCollapse">existing users</a></p>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="collapse multi-collapse" id="userCollapse">
+                    <div class="card card-body">
+                        <p>Admin -> j.doe@admin.com PW: johndoe123</p>
+                        <p>User -> d.joe@user.com PW: donjoe123</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 </div>

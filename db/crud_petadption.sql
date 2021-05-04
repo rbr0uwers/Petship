@@ -20,8 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Datenbank: `cr11_petadoption_ronnybrouwers`
 --
-CREATE DATABASE IF NOT EXISTS `cr11_petadoption_ronnybrouwers` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `cr11_petadoption_ronnybrouwers`;
+CREATE DATABASE IF NOT EXISTS `crud_petadoption` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `crud_petadoption`;
 
 -- --------------------------------------------------------
 
@@ -120,8 +120,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `password`, `status`) VALUES
-(0000000001, 'John', 'Doe', 'j.doe@acme.com', '$2y$10$N4FT/vnJaEsMScofv.H5J.8Wjo7s6o6dtSoq3LHAnYbtTRmNknC3q', 'admin'),
-(0000000003, 'Heinz', 'Sielmann', 'h.sielmann@petlover.at', '$2y$10$Bp2NiBkITQRS/O4U/vpQx.Vr893QHKAqf0FJM7zKfB2o9Gj7q8kjS', 'user');
+(0000000001, 'John', 'Doe', 'j.doe@admin.com', '$2y$10$N4FT/vnJaEsMScofv.H5J.8Wjo7s6o6dtSoq3LHAnYbtTRmNknC3q', 'admin'),
+(0000000002, 'Don', 'Joe', 'd.joe@user.com', '$2y$10$XSOvnMHF4ycRZip9cJ5fwOYUcFGRxbYunUl1TYH0ooH5U3Cmd8qrG', 'user');
 
 --
 -- Indizes der exportierten Tabellen
