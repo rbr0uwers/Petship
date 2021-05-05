@@ -3,10 +3,7 @@ abstract class Input {
     public $error;
 
     public function __construct(){
-        $this->error = new class {
-            public $hasError = false;
-            public $message = "";
-        };
+        $this->error = new InputError(false, "");
     }
 
     protected function resetError(){
@@ -23,5 +20,16 @@ abstract class Input {
     }
 
     abstract function getId();
+}
+
+
+class InputError {
+    public $hasError;
+    public $message;
+
+    public function __construct($hasError, $message){
+        $this->hasError = $hasError;
+        $this->message = $message;
+    }
 }
 ?>

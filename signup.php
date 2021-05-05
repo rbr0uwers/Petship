@@ -76,17 +76,17 @@ include_once "components/layout_top.php";
     <form method="post" class="row g-3" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
         <div class="col-md-6">
             <label for="inputFname" class="form-label">First name</label>
-            <input type="text" class="form-control" name="fName" id="inputFname" value="<?php echo $userInput->getfName() ?? "" ?>" required>
+            <input type="text" class="form-control" name="fName" id="inputFname" value="<?php if (!is_null($userInput->getfName())) echo $userInput->getfName(); ?>" required>
             <div class="form-text text-danger"><?php echo $fNameErr; ?></div>
         </div>
         <div class="col-md-6">
             <label for="inputLname" class="form-label">Last name</label>
-            <input type="text" class="form-control" name="lName" id="inputLname" value="<?php echo $userInput->getlName() ?? "" ?>" required>
+            <input type="text" class="form-control" name="lName" id="inputLname" value="<?php if (!is_null($userInput->getlName())) echo $userInput->getlName(); ?>" required>
             <div class="form-text text-danger"><?php echo $lNameErr; ?></div>
         </div>
         <div class="col-md-6">
             <label for="inputMail" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" id="inputMail" value="<?php echo $userInput->getEmail() ?? "" ?>" required>
+            <input type="email" class="form-control" name="email" id="inputMail" value="<?php if (!is_null($userInput->getEmail())) echo $userInput->getEmail(); ?>" required>
             <div class="form-text text-danger"><?php echo $mailErr; ?></div>
         </div>
         <div class="w-100"></div>

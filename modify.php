@@ -53,28 +53,28 @@ include_once "components/layout_top.php";
     <form class="row g-3 needs-validation" method="post" action="action.php" enctype="multipart/form-data">
         <div class="col-md-6">
             <!-- Send ID to identify pet item to modify later -->
-            <input type="hidden" name="id" value="<?php echo $petResult[0]['pid'] ?? ''; ?>">
+            <input type="hidden" name="id" value="<?php if (!is_null($petResult[0]['pid'])) echo $petResult[0]['pid']; ?>">
             <label for="inputName" class="form-label">Name</label>
-            <input type="text" class="form-control" name="name" id="inputName" value="<?php echo $petResult[0]['name'] ?? ''; ?>" required <?php echo $disableText; ?>>
+            <input type="text" class="form-control" name="name" id="inputName" value="<?php if (!is_null($petResult[0]['name'])) echo $petResult[0]['name']; ?>" required <?php echo $disableText; ?>>
         </div>
         <div class="col-md-6">
             <label for="inputBreed" class="form-label">Breed</label>
-            <input type="text" class="form-control" name="breed" id="inputBreed" value="<?php echo $petResult[0]['breed'] ?? ''; ?>" required <?php echo $disableText; ?>>
+            <input type="text" class="form-control" name="breed" id="inputBreed" value="<?php if (!is_null($petResult[0]['breed'])) echo $petResult[0]['breed']; ?>" required <?php echo $disableText; ?>>
         </div>
         <div class="col-12">
             <label for="inputDescription" class="form-label">Description</label>
-            <textarea type="text" class="form-control" name="description" id="inputDescription" rows="3" required <?php echo $disableText; ?>><?php echo $petResult[0]['description'] ?? ''; ?></textarea>
+            <textarea type="text" class="form-control" name="description" id="inputDescription" rows="3" required <?php echo $disableText; ?>><?php if (!is_null($petResult[0]['description'])) echo $petResult[0]['description']; ?></textarea>
         </div>
         <div class="col-md-6">
             <input type="hidden" name="MAX_FILE_SIZE" value="500000" />
-            <input type= "hidden" name= "image" value="<?php echo $petResult[0]['image'] ?? ''; ?>" />
+            <input type= "hidden" name= "image" value="<?php if (!is_null($petResult[0]['image'])) echo $petResult[0]['image']; ?>" />
             <label for="inputUrl" class="form-label">Image File</label>
             <input type="file" class="form-control" name="image" id="inputUrl" <?php echo $disableText; ?>>
             <div class="form-text">Maximum file size: 500KB. Allowed extensions: png or jpg.</div>
         </div>
         <div class="col-md-3">
             <label for="inputBirthdate" class="form-label">Birthdate</label>
-            <input type="date" class="form-control" name="birthdate" id="inputBirthdate" value="<?php echo $petResult[0]['birthdate'] ?? ''; ?>" required <?php echo $disableText; ?>>
+            <input type="date" class="form-control" name="birthdate" id="inputBirthdate" value="<?php if (!is_null($petResult[0]['birthdate'])) echo $petResult[0]['birthdate']; ?>" required <?php echo $disableText; ?>>
         </div>
         <div class="col-md-3">
             <label for="inputSize" class="form-label">Size</label>
@@ -85,18 +85,18 @@ include_once "components/layout_top.php";
         </div>
         <div class="w-100"></div>
         <!-- Send Address ID to identify address item later -->
-        <input type="hidden" name="aid" value="<?php echo $petResult[0]['aid'] ?? ''; ?>">
+        <input type="hidden" name="aid" value="<?php if (!is_null($petResult[0]['aid'])) echo $petResult[0]['aid']; ?>">
         <div class="col-md-6">
             <label for="inputStreet" class="form-label">Street</label>
-            <input type="text" class="form-control" name="street" id="inputStreet" value="<?php echo $petResult[0]['street'] ?? ''; ?>" required <?php echo $disableText; ?>>
+            <input type="text" class="form-control" name="street" id="inputStreet" value="<?php if (!is_null($petResult[0]['street'])) echo $petResult[0]['street']; ?>" required <?php echo $disableText; ?>>
         </div>
         <div class="col-md-6">
             <label for="inputZip" class="form-label">Zip</label>
-            <input type="text" class="form-control" name="zip" id="inputZip" value="<?php echo $petResult[0]['zip'] ?? ''; ?>" required <?php echo $disableText; ?>>
+            <input type="text" class="form-control" name="zip" id="inputZip" value="<?php if (!is_null($petResult[0]['zip'])) echo $petResult[0]['zip']; ?>" required <?php echo $disableText; ?>>
         </div>
         <div class="col-md-6">
             <label for="inputCity" class="form-label">City</label>
-            <input type="text" class="form-control" name="city" id="inputCity" value="<?php echo $petResult[0]['city'] ?? ''; ?>" required <?php echo $disableText; ?>>
+            <input type="text" class="form-control" name="city" id="inputCity" value="<?php if (!is_null($petResult[0]['city'])) echo $petResult[0]['city']; ?>" required <?php echo $disableText; ?>>
         </div>
         <div class="w-100"></div>
         <div class="col-md-6">

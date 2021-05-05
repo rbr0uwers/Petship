@@ -80,7 +80,7 @@ include_once "components/layout_top.php";
     <form method="post" class="row g-3" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
         <div class="col-md-7">
             <label for="inputMail" class="form-label">Username</label>
-            <input type="email" autocomplete="off" name="email" id="inputMail" class="form-control" value="<?php echo $userInput->getEmail() ?? ""; ?>" required/>
+            <input type="email" autocomplete="off" name="email" id="inputMail" class="form-control" value="<?php if (!is_null($userInput->getEmail())) echo $userInput->getEmail()?>" required/>
             <div class="form-text text-danger"><?php echo $mailErr; ?></div>
         </div>
         <div class="col-md-7">
